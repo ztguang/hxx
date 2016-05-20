@@ -1,7 +1,11 @@
 #include "hxx.hpp"
 
 #include <algorithm>
+#include <cmath>
+#include <iostream>
 #include <numeric>
+using std::abs;
+using std::cerr;
 using std::partial_sum;
 using std::lower_bound;
 
@@ -18,13 +22,24 @@ hxx_gen::hxx_gen (initializer_list<double> A,
     M = B.size () / N;
 
     partial_sum (p.begin (), p.end (), p.begin ());
+    if (abs (p.back () - 1.) > 1.e-6) {
+        cerr << "Error: hxx_gen.cpp: hxx_gen: cumulative probability does not sum to 1.: Pi\n";
+    }
+    p.back () = 1.;
 
     for (int i = 0; i < N; ++i) {
         partial_sum (a.begin () + N*i, a.begin () + N*(i+1), a.begin () + N*i);
+        if (abs (a[N*(i+1) - 1] - 1.) > 1.e-6) {
+            cerr << "Error: hxx_gen.cpp: hxx_gen: cumulative probability does not sum to 1.: A\n";
+        }
+        a[N*(i+1) - 1] = 1.;
     }
-
     for (int i = 0; i < N; ++i) {
         partial_sum (b.begin () + M*i, b.begin () + M*(i+1), b.begin () + M*i);
+        if (abs (b[M*(i+1) - 1] - 1.) > 1.e-6) {
+            cerr << "Error: hxx_gen.cpp: hxx_gen: cumulative probability does not sum to 1.: B\n";
+        }
+        b[M*(i+1) - 1] = 1.;
     }
 
     t = -1;
