@@ -11,6 +11,20 @@ using std::ranlux48;
 using std::uniform_real_distribution;
 using std::vector;
 
+void hxx_viterbi (vector<int>::const_iterator O_it,
+                  vector<int>::const_iterator O_last,
+                  initializer_list<double> A,
+                  initializer_list<double> B,
+                  initializer_list<double> Pi,
+                  vector<int>& q_star);
+
+void hxx_viterbi (vector<int>::const_iterator O_it,
+                  vector<int>::const_iterator O_last,
+                  const vector<double> A,
+                  const vector<double> B,
+                  const vector<double> Pi,
+                  vector<int>& q_star);
+
 class hxx_gen {
 public:
     hxx_gen (initializer_list<double> A, initializer_list<double> B, initializer_list<double> Pi);
