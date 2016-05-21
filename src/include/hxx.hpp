@@ -27,4 +27,6 @@ private:
     uniform_real_distribution<> urd;
 };
 
+double hxx_forward (vector<int>::const_iterator, vector<int>::const_iterator,
+                    initializer_list<double> A, initializer_list<double> B, initializer_list<double> Pi);
 #endif // HXX_HPP
