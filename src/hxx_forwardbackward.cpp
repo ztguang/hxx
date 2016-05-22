@@ -24,7 +24,7 @@ hxx_forwardbackward (const vector<int>& O,
 
     // Forward algorithm.
     vector<double> alpha_bar (N);
-    vector<double> Alpha_Hat (N);
+    vector<double> Alpha_Hat (T * N);
     auto alpha_hat = [N, &Alpha_Hat](int t, int i) ->double& { return Alpha_Hat[N*t + i]; };
     double alpha_bar_sum = 0.;
     vector<double> c (T);
@@ -63,17 +63,17 @@ hxx_forwardbackward (const vector<int>& O,
         bigCT *= c[t];
 
         for (int i = 0; i < N; ++i) {
-            alpha_hat(t, i) = c[t] * alpha_bar[i];
+            alpha_hat (t, i) = c[t] * alpha_bar[i];
         }
     }
 
     // Backward algorithm.
     vector<double> beta_bar (N);
-    vector<double> Beta_Hat (N);
+    vector<double> Beta_Hat (T * N, 0.);
     auto beta_hat = [N, &Beta_Hat](int t, int i) ->double& { return Beta_Hat[N*t + i]; };
 
     for (int i = 0; i < N; ++i) {
-        beta_hat(T - 1, i) = c[T - 1];
+        beta_hat (T - 1, i) = c[T - 1];
     }
 
     for (int t = T - 2; t > -1; --t) {
@@ -108,4 +108,6 @@ hxx_forwardbackward (const vector<int>& O,
             gamma (t, i) = alpha_hat (t, i) * beta_hat (t, i) / c[t];
         }
     }
+
+    return bigCT;
 }

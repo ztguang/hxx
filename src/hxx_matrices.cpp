@@ -12,6 +12,24 @@ hxx_matrices::hxx_matrices (initializer_list<double> A_in,
 {
 }
 
+double
+hxx_matrices::a (int i, int j) const
+{
+    return A[N_*i + j];
+}
+
+double
+hxx_matrices::b (int i, int k) const
+{
+    return B[N_*i + k];
+}
+
+double
+hxx_matrices::p (int i) const
+{
+    return Pi[i];
+}
+
 double&
 hxx_matrices::a (int i, int j)
 {
