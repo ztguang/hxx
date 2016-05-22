@@ -1,8 +1,10 @@
 #include "hxx.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <vector>
 using std::accumulate;
+using std::nan;
 using std::transform;
 using std::vector;
 
@@ -25,16 +27,26 @@ double hxx_forward (vector<int>::const_iterator first,
 
     vector<double> alpha_bar (N);
     vector<double> alpha_hat (N);
+    double alpha_bar_sum;
     double c;
     double bigCT = 1.;
 
-    for (int i = 0; i < N; ++i) {
-        alpha_bar[i] = p(i) * b(i, *first);
-        c = 1. / accumulate (alpha_bar.begin (), alpha_bar.end (), 0.);
-        bigCT *= c;
-        transform (alpha_bar.begin (), alpha_bar.end (), alpha_hat.begin (), [c](double& v) { return v * c; });
+    if (first == last) {
+        return nan("");
     }
 
+    for (int i = 0; i < N; ++i) {
+        alpha_bar[i] = p(i) * b(i, *first);
+    }
+
+    alpha_bar_sum = accumulate (alpha_bar.begin (), alpha_bar.end (), 0.);
+    if (alpha_bar_sum > 0.) {
+        c = 1. / alpha_bar_sum;
+        bigCT *= c;
+        transform (alpha_bar.begin (), alpha_bar.end (), alpha_hat.begin (), [c](double v) { return v * c; });
+    } else {
+        alpha_hat = alpha_bar;
+    }
     ++first;
 
     for (; first != last; ++first) {
@@ -44,14 +56,19 @@ double hxx_forward (vector<int>::const_iterator first,
             for (int i = 0; i < N; ++i) {
                 alpha_bar[j] += alpha_hat[i] * a(i, j) * b(j, *first);
             }
+        }
 
-            c = 1. / accumulate (alpha_bar.begin (), alpha_bar.end (), 0.);
+        alpha_bar_sum = accumulate (alpha_bar.begin (), alpha_bar.end (), 0.);
+        if (alpha_bar_sum > 0.) {
+            c = 1. / alpha_bar_sum;
             bigCT *= c;
-
-            transform (alpha_bar.begin (), alpha_bar.end (), alpha_hat.begin (), [c](double& v) { return v * c; });
+            transform (alpha_bar.begin (), alpha_bar.end (), alpha_hat.begin (), [c](double v) { return v * c; });
+        } else {
+            alpha_hat = alpha_bar;
         }
     }
 
-    return accumulate (alpha_bar.begin (), alpha_bar.end (), 0.) / bigCT;
+    return 1. / bigCT;
+    //return accumulate (alpha_hat.begin (), alpha_hat.end (), 0.) / bigCT;
 }
 
