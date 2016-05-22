@@ -11,6 +11,22 @@ using std::ranlux48;
 using std::uniform_real_distribution;
 using std::vector;
 
+class hxx_matrices {
+public:
+    hxx_matrices (int N_in, int M_in);
+    hxx_matrices (initializer_list<double> A_in, initializer_list<double> B_in, initializer_list<double> Pi_in);
+    double& a (int i, int j);
+    double& b (int i, int k);
+    double& p (int i);
+    int N () const;
+    int M () const;
+private:
+    int N_, M_;
+    vector<double> A;
+    vector<double> B;
+    vector<double> Pi;
+};
+
 void hxx_viterbi (vector<int>::const_iterator O_it,
                   vector<int>::const_iterator O_last,
                   initializer_list<double> A,
