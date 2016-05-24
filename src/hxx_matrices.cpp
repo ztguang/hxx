@@ -21,7 +21,7 @@ hxx_matrices::a (int i, int j) const
 double
 hxx_matrices::b (int i, int k) const
 {
-    return B[N_*i + k];
+    return B[M_*i + k];
 }
 
 double
@@ -39,7 +39,7 @@ hxx_matrices::a (int i, int j)
 double&
 hxx_matrices::b (int i, int k)
 {
-    return B[N_*i + k];
+    return B[M_*i + k];
 }
 
 double&
