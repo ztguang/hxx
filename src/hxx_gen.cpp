@@ -7,12 +7,13 @@
 using std::abs;
 using std::cerr;
 using std::partial_sum;
+using std::random_device;
 using std::lower_bound;
 
 hxx_gen::hxx_gen (initializer_list<double> A,
                   initializer_list<double> B,
                   initializer_list<double> Pi)
-: reng (), urd (0., 1.)
+: reng (rd()), urd (0., 1.)
  {
     a.assign (A);
     b.assign (B);

@@ -30,15 +30,17 @@ hxx_baumwelch (const vector<int>& O,
     }
 
     for (int i = 0; i < N; ++i) {
+        double aij_denom = 0.;
+
+        for (int t = 0; t < T - 1; ++t) {
+            aij_denom += gamma (t, i);
+        }
+
         for (int j = 0; j < N; ++j) {
             double aij_numer = 0.;
+
             for (int t = 0; t < T - 1; ++t) {
                 aij_numer += xi (t, i, j);
-            }
-
-            double aij_denom = 0.;
-            for (int t = 0; t < T - 1; ++t) {
-                aij_denom += gamma (t, i);
             }
 
             a (i, j) = aij_numer / aij_denom;
@@ -46,17 +48,19 @@ hxx_baumwelch (const vector<int>& O,
     }
 
     for (int j = 0; j < N; ++j) {
+        double bik_denom = 0.;
+        
+        for (int t = 0; t < T; ++t) {
+            bik_denom += gamma (t, j);
+        }
+
         for (int k = 0; k < M; ++k) {
             double bik_numer = 0.;
+
             for (int t = 0; t < T; ++t) {
                 if (O[t] == k) {
                     bik_numer += gamma (t, j);
                 }
-            }
-
-            double bik_denom = 0.;
-            for (int t = 0; t < T; ++t) {
-                bik_denom += gamma (t, j);
             }
 
             b (j, k) = bik_numer / bik_denom;

@@ -4,7 +4,11 @@ CPPFLAGS = -Iinclude
 all: hxx_gen-1 \
      hxx_viterbi-1 \
      hxx_baumwelch-1 \
+     hxx_baumwelch-2 \
      hxx_forward-1
+
+hxx_baumwelch-2: hxx_baumwelch-2.cpp hxx_forward.o hxx_gen.o hxx_forwardbackward.o hxx_matrices.o hxx_baumwelch.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^
 
 hxx_baumwelch-1: hxx_baumwelch-1.cpp hxx_forward.o hxx_gen.o hxx_forwardbackward.o hxx_matrices.o hxx_baumwelch.o
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^

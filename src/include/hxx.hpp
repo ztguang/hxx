@@ -8,6 +8,7 @@
 using std::initializer_list;
 using std::pair;
 using std::ranlux48;
+using std::random_device;
 using std::uniform_real_distribution;
 using std::vector;
 
@@ -21,6 +22,7 @@ public:
     double& a (int i, int j);
     double& b (int i, int k);
     double& p (int i);
+    void randomize ();
     int N () const;
     int M () const;
 private:
@@ -70,6 +72,7 @@ private:
     int M; // Number of distinct observation symbols.
     int t;
     int q; // Hidden state at time t.
+    random_device rd;
     ranlux48 reng;
     uniform_real_distribution<> urd;
 };
