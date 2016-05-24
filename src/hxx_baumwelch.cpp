@@ -5,7 +5,7 @@ using std::vector;
 
 void
 hxx_baumwelch (const vector<int>& O,
-               const vector<double>& Eta,
+               const vector<double>& Xi,
                const vector<double>& Gamma,
                hxx_matrices& biglambda)
 {
@@ -15,7 +15,7 @@ hxx_baumwelch (const vector<int>& O,
 
     int N = biglambda.N ();
     
-    auto eta = [N, &Eta](int t, int i, int j) { return Eta[N*(N*t + i) + j]; };
+    auto xi = [N, &Xi](int t, int i, int j) { return Xi[N*(N*t + i) + j]; };
     auto gamma = [N, &Gamma](int t, int i) { return Gamma[N*t + i]; };
 
     int T = O.size ();
@@ -32,7 +32,7 @@ hxx_baumwelch (const vector<int>& O,
         for (int j = 0; j < N; ++j) {
             double aij_numer = 0.;
             for (int t = 0; t < T - 1; ++t) {
-                aij_numer += eta (t, i, j);
+                aij_numer += xi (t, i, j);
             }
 
             double aij_denom = 0.;
