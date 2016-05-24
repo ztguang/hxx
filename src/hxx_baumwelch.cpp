@@ -45,7 +45,7 @@ hxx_baumwelch (const vector<int>& O,
     }
 
     for (int j = 0; j < N; ++j) {
-        for (int k = 0; k < N; ++k) {
+        for (int k = 0; k < M; ++k) {
             double bik_numer = 0.;
             for (int t = 0; t < T; ++t) {
                 if (O[t] == k) {
