@@ -7,7 +7,7 @@ using std::nan;
 double
 hxx_forwardbackward (const vector<int>& O,
                      hxx_matrices& biglambda,
-                     vector<double>& Eta,
+                     vector<double>& Xi,
                      vector<double>& Gamma)
 {
     auto a = [&biglambda](int i, int j) { return biglambda.a (i, j); };
@@ -89,23 +89,36 @@ hxx_forwardbackward (const vector<int>& O,
         }
     }
 
-    Eta.resize (T * N * N);
-    Gamma.resize (T * N);
+    Xi.resize (T * N * N, 0.);
+    Gamma.resize (T * N), 0.;
 
-    auto eta = [N, &Eta](int t, int i, int j) ->double& { return Eta[N*(N*t + i) + j]; };
+    auto xi = [N, &Xi](int t, int i, int j) ->double& { return Xi[N*(N*t + i) + j]; };
     auto gamma = [N, &Gamma](int t, int i) ->double& { return Gamma[N*t + i]; };
 
     for (int t = 0; t < T - 1; ++t) {
+        double xi_denom = 0.;
+
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
-                eta (t, i, j) = alpha_hat (t, i) * a (i, j) * b (j, O[t + 1]) * beta_hat (t + 1, j);
+                xi_denom += xi (t, i, j) = alpha_hat (t, i) * a (i, j) * b (j, O[t + 1]) * beta_hat (t + 1, j);
+            }
+        }
+
+        for (int i = 0; i < N; ++i) {
+            for (int j = 0; j < N; ++j) {
+                xi (t, i, j) /= xi_denom;
             }
         }
     }
     
     for (int t = 0; t < T; ++t) {
+        double gamma_denom = 0.;
+
         for (int i = 0; i < N; ++i) {
-            gamma (t, i) = alpha_hat (t, i) * beta_hat (t, i) / c[t];
+            gamma_denom += gamma (t, i) = alpha_hat (t, i) * beta_hat (t, i);
+        }
+        for (int i = 0; i < N; ++i) {
+            gamma (t, i) /= gamma_denom;
         }
     }
 

@@ -32,7 +32,7 @@ private:
 
 void
 hxx_baumwelch (const vector<int>& O,
-               const vector<double>& Eta,
+               const vector<double>& Xi,
                const vector<double>& Gamma,
                hxx_matrices& biglambda);
 
