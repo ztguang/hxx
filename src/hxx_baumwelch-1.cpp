@@ -37,15 +37,15 @@ int main (int argc, char* argv[])
         O[t] = tmp.second;
     }
 
-    vector<double> Eta, Gamma;
+    vector<double> Xi, Gamma;
 
     //random_shuffle (O.begin (), O.end ());
 
-    hxx_forwardbackward (O, biglambda, Eta, Gamma);
+    hxx_forwardbackward (O, biglambda, Xi, Gamma);
 
     hxx_matrices newbiglambda (A, B, Pi);
 
-    hxx_baumwelch (O, Eta, Gamma, newbiglambda);
+    hxx_baumwelch (O, Xi, Gamma, newbiglambda);
 
     for (int t = 4; t < T; ++t) {
         double likelihood = hxx_forward (O.cbegin () + t - 4, O.cbegin () + t + 1, A, B, Pi);
