@@ -7,13 +7,14 @@ void
 hxx_baumwelch (const vector<int>& O,
                const vector<double>& Xi,
                const vector<double>& Gamma,
-               hxx_matrices& biglambda)
+               hxx_matrices& lambda)
 {
-    auto a = [&biglambda](int i, int j) ->double& { return biglambda.a (i, j); };
-    auto b = [&biglambda](int i, int j) ->double& { return biglambda.b (i, j); };
-    auto p = [&biglambda](int i) ->double& { return biglambda.p (i); };
+    auto a = [&lambda](int i, int j) ->double& { return lambda.a (i, j); };
+    auto b = [&lambda](int i, int j) ->double& { return lambda.b (i, j); };
+    auto p = [&lambda](int i) ->double& { return lambda.p (i); };
 
-    int N = biglambda.N ();
+    int N = lambda.N ();
+    int M = lambda.N ();
     
     auto xi = [N, &Xi](int t, int i, int j) { return Xi[N*(N*t + i) + j]; };
     auto gamma = [N, &Gamma](int t, int i) { return Gamma[N*t + i]; };
