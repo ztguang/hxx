@@ -39,12 +39,22 @@ int main (int argc, char *argv[])
         raw.push_back (d_in);
     }
 
+    size_t T = raw.size ();
+
+    bool convert_pct = true;
+
+    if (convert_pct) {
+        for (int t = 0; t < T - 1; ++t) {
+            double prev = raw[t];
+            raw[t] = raw[t + 1] / raw[t] - 1.;
+        }
+        --T;
+    }
+
     for (auto i: raw) {
         cout << i << " ";
     }
     cout << "\n";
-
-    size_t T = raw.size ();
 
     {
         vector<double> raw_copy (raw);
@@ -81,13 +91,21 @@ int main (int argc, char *argv[])
         cout << " split=" << split;
         cout << "\n";
 
-        for (int i = 0; i < 10; ++i) {
+        const int reps = 10;
+        for (int i = 0; i < reps; ++i) {
             hxx_forwardbackward (O, *lambda_in, Xi, Gamma);
 
             hxx_baumwelch (O, Xi, Gamma, *lambda_out);
 
+            if (reps - 1 == i) {
+                cout << "'k" << split << "':{";
+            }
+
             output_lambda (*lambda_out);
 
+            if (reps -1 == i) { 
+                cout << ",'split':" << split << "},";
+            }
             cout << "\n";
 
             swap (lambda_in, lambda_out);
@@ -100,26 +118,30 @@ void output_lambda (const hxx_matrices& lambda) {
     int N = lambda.N ();
     int M = lambda.M ();
 
-    cout << "A = {";
+    cout << "'A':[";
     for (int i = 0; i < N; ++i) {
+        cout << "[";
         for (int j = 0; j < N; ++j) {
-            cout << " " << lambda.a (i, j);
+            cout << lambda.a (i, j) << ",";
         }
+        cout << "],";
     }
-    cout << " } ";
+    cout << "],";
 
-    cout << "B = {";
+    cout << "'B':[";
     for (int i = 0; i < N; ++i) {
+        cout << "[";
         for (int k = 0; k < M; ++k) {
-            cout << " " << lambda.b (i, k);
+            cout << lambda.b (i, k) << ",";
         }
+        cout << "],";
     }
-    cout << " } ";
+    cout << "],";
 
-    cout << "Pi = {";
+    cout << "'Pi':[";
     for (int i = 0; i < N; ++i) {
-        cout << " " << lambda.p (i);
+        cout << lambda.p (i) << ",";
     }
-    cout << " } ";
+    cout << "]";
 }
 
