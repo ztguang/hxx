@@ -21,7 +21,10 @@ int main (int argc, char* argv[])
     hxx_gen hg (A, B, Pi);
 
     pair<int, int> tmp;
-    int T = 100;
+    
+    //int T = 100;
+    int T = atoi (argv[1]);
+    
     vector<int> Q (T);
     vector<int> O (T);
 
