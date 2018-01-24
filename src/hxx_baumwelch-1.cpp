@@ -11,11 +11,21 @@ void output_biglambda (const hxx_matrices&);
 
 int main (int argc, char* argv[])
 {
+//ztg add
+    double x1 = atof(argv[1]), x2 = atof(argv[2]), x3 = atof(argv[3]), x4 = atof(argv[4]);
+
     auto A = {.5, .5,
               .5, .5};
 
+//ztg alter
+//-----------------------------------
+/*
     auto B = {.75, .25,
               .25, .75};
+//*/
+    auto B = {x1, x2,
+              x3, x4};
+//-----------------------------------
 
     //auto B = {.99, .01,
     //          1., .0};
