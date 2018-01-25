@@ -8,6 +8,4 @@ Hidden Markov Model code in C++11.
 ## Usage
 [root@bupt src]# make
 
-[root@bupt src]# ./hxx_baumwelch-1 0.75 0.25 0.25 0.75
-
-[root@bupt src]# ./hxx_baumwelch-1 0.99 0.0. 1 0
+[root@bupt src]# ./hxx_baumwelch-1 0.5 0.5 0.5 0.5 0.75 0.35 0.15 0.75 0.1 0.9
