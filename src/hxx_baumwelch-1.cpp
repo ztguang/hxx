@@ -1,6 +1,6 @@
 /*
 [root@bupt src]# make
-[root@bupt src]# ./hxx_baumwelch-1 0.5 0.5 0.5 0.5 0.75 0.35 0.15 0.75 0.1 0.9
+[root@bupt src]# ./hxx_baumwelch-1 0.5 0.5 0.5 0.5 0.75 0.25 0.25 0.75 0.1 0.9 6
 */
 
 #include "hxx.hpp"
@@ -17,9 +17,13 @@ void output_biglambda (const hxx_matrices&);
 int main (int argc, char* argv[])
 {
 //ztg add
+//-----------------------------------
     double a1 = atof(argv[1]), a2 = atof(argv[2]), a3 = atof(argv[3]), a4 = atof(argv[4]);
     double b1 = atof(argv[5]), b2 = atof(argv[6]), b3 = atof(argv[7]), b4 = atof(argv[8]);
     double p1 = atof(argv[9]), p2 = atof(argv[10]);
+    int times = atoi(argv[11]);
+//-----------------------------------
+
 
 //ztg alter
 //-----------------------------------
@@ -51,7 +55,11 @@ int main (int argc, char* argv[])
     hxx_gen hg (A, B, Pi);
 
     pair<int, int> tmp;
-    int T = 100000;
+
+//ztg alter
+    //int T = 100000;
+    int T = times;
+
     vector<int> Q (T);
     vector<int> O (T);
 
